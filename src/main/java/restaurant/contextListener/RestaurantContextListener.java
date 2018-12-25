@@ -25,7 +25,7 @@ public class RestaurantContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        log.
+
         final ServletContext context = event.getServletContext();
         final int currentYear = Year.now().getValue();
         context.setAttribute("currentYear", currentYear);
