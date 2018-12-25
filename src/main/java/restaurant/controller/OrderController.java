@@ -104,8 +104,6 @@ public class OrderController extends HttpServlet {
     }
 
     private String checkIn(HttpServletRequest request, HttpServletResponse response) {
-//        User user = new User();
-//        request.getSession().setAttribute("user", user);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("in checkin. User: " + user);
@@ -131,8 +129,6 @@ public class OrderController extends HttpServlet {
         }
 
         request.getSession().setAttribute("user", user);
-//        request.getSession().removeAttribute("cart");
-
         return "/order/displayOrder";
     }
 

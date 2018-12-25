@@ -1,5 +1,7 @@
 package restaurant.controller;
 
+import restaurant.data.HelperDB;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,46 +15,29 @@ import java.sql.*;
 public class SqlGatewayServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        var sqlStatement = request.getParameter("sqlStatement");
+        var sqlStatement = request.getParameter("sqlStatement").trim();
         var sqlResult = "";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
 
-            final var dbURL = "jdbc:mysql://localhost:3306/restaurantDB";
-            String username = "restaurant_user";
-            String password = "sesame";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+        try (var con = HelperDB.getConnection();
+             var stat = con.createStatement()) {
 
-            Statement statement = connection.createStatement();
-
-            sqlStatement = sqlStatement.trim();
             if (sqlStatement.length() >= 6) {
                 String sqlType = sqlStatement.substring(0, 6);
                 if (sqlType.equalsIgnoreCase("select")) {
-                    ResultSet resultSet
-                            = statement.executeQuery(sqlStatement);
-                    sqlResult = SQLUtil.getHtmlTable(resultSet);
-                    resultSet.close();
+                    try (var resSet = stat.executeQuery(sqlStatement)) {
+                        sqlResult = SQLUtil.getHtmlTable(resSet);
+                    }
                 } else {
-                    int i = statement.executeUpdate(sqlStatement);
-                    if (i == 0) { // a DDL statement
-                        sqlResult = 
-                                "<p>The statement executed successfully.</p>";
-                    } else { // an INSERT, UPDATE, or DELETE statement
-                        sqlResult = 
-                                "<p>The statement executed successfully.<br>"
-                                + i + " row(s) affected.</p>";
+                    int i = stat.executeUpdate(sqlStatement);
+                    if (i == 0) {
+                        sqlResult = "<p>The statement executed successfully.</p>";
+                    } else {
+                        sqlResult = String.format("<p>The statement executed successfully.<br>%s row(s) affected.</p>", i);
                     }
                 }
             }
-            statement.close();
-            connection.close();
-        } catch (ClassNotFoundException e) {
-            sqlResult = "<p>Error loading the databse driver: <br>"
-                    + e.getMessage() + "</p>";
-        } catch (SQLException e) {
-            sqlResult = "<p>Error executing the SQL statement: <br>"
-                    + e.getMessage() + "</p>";
+        } catch (SQLException ex) {
+            System.err.println("doPost sql: " + ex);
         }
 
         HttpSession session = request.getSession();

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class SQLUtil {
     public static String getHtmlTable(ResultSet results) throws SQLException {
         final var htmlTable = new StringBuilder();
-        ResultSetMetaData metaData = results.getMetaData();
+        var metaData = results.getMetaData();
         int columnCount = metaData.getColumnCount();
 
         htmlTable.append("<table>");

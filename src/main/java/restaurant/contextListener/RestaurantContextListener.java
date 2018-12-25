@@ -4,16 +4,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import restaurant.business.menu.Dish;
 import restaurant.business.menu.Menu;
-import restaurant.data.HelperDB;
 import restaurant.data.impl.SimpleDishDao;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.math.BigDecimal;
-import java.sql.*;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -47,57 +43,6 @@ public class RestaurantContextListener implements ServletContextListener {
 
     private Menu readFromDatabase() {
         final List<Dish> menu = new SimpleDishDao().selectAll();
-
-//        final List<Dish> menu = new ArrayList<>();
-
-//        final String query = "select * from Dish";
-//        try (var con = HelperDB.getConnection();
-//             var stat = con.createStatement();
-//             var resSet = stat.executeQuery(query)) {
-//
-//            while (resSet.next()) {
-//                final String id = resSet.getString(1);
-//                final String name = resSet.getString(2);
-//                final String calories = resSet.getString(3);
-//                final String type = resSet.getString(4);
-//                final boolean isVegeterian = resSet.getString(5).equalsIgnoreCase("YES");
-//                final BigDecimal price = new BigDecimal(resSet.getString(6));
-//
-//                menu.add(new Dish(Integer.parseInt(id), name, Integer.parseInt(calories), Dish.Type.valueOf(type), isVegeterian, price));
-//            }
-//        } catch (SQLException ex) {
-//            System.err.println();
-//        }
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//            final var dbURL = "jdbc:mysql://localhost:3306/restaurantMenu";
-//            String username = "restaurantMenu_user";
-//            String password = "sesame";
-//            final String sqlStatement = "select * from Dish";
-//
-//            try (Connection connection = DriverManager.getConnection(dbURL, username, password);
-//                 Statement statement = connection.createStatement();
-//                 ResultSet resultSet = statement.executeQuery(sqlStatement)) {
-//                    while (resultSet.next()) {
-//                        final String id = resultSet.getString(1);
-//                        System.out.println("id: " + id);
-//                        final String name = resultSet.getString(2);
-//                        System.out.println("name " + name);
-//                        final String calories = resultSet.getString(3);
-//                        System.out.println("cal " + calories);
-//                        final String type = resultSet.getString(4);
-//                        System.out.println("type " + type);
-//                        final boolean isVegeterian = resultSet.getString(5).equalsIgnoreCase("YES");
-//                        System.out.println("veg " + isVegeterian);
-//                        final BigDecimal price = new BigDecimal(resultSet.getString(6));
-//                        System.out.println("pr " + price);
-//                        menu.add(new Dish(Integer.parseInt(id), name, Integer.parseInt(calories), Dish.Type.valueOf(type), isVegeterian, price));
-//                    }
-//                System.out.println(menu);
-//            }
-//        } catch (ClassNotFoundException | SQLException e) {
-//            System.err.println("error in delete(email)");
-//        }
         return initMenu(menu);
     }
 

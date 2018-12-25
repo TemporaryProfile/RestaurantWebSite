@@ -29,11 +29,8 @@ public class SimpleInvoiceDao implements InvoiceDao {
 
             prepStat.setLong(1, invoice.getUser().getId());
             prepStat.setFloat(2, invoice.totalPrice().floatValue());
-//            prepStat.setDate(3, invoice.getDate());
             prepStat.executeUpdate();
 
-//            Long id = HelperDB.getId();
-            //Get the InvoiceID from the last INSERT statement.
             String identityQuery = "SELECT @@IDENTITY AS IDENTITY";
             Statement identityStatement = con.createStatement();
             ResultSet identityResultSet = identityStatement.executeQuery(identityQuery);

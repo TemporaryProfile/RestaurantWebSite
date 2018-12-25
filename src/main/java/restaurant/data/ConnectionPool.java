@@ -19,10 +19,6 @@ public class ConnectionPool {
             }
         }
         return pool;
-//        if (pool == null) {
-//            pool = new ConnectionPool();
-//        }
-//        return pool;
     }
 
     private ConnectionPool() {

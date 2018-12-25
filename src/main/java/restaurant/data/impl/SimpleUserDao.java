@@ -54,16 +54,6 @@ public class SimpleUserDao implements UserDao {
 
             ps.executeUpdate();
 
-            //Get the InvoiceID from the last INSERT statement.
-//            String identityQuery = "SELECT @@IDENTITY AS IDENTITY";
-//            Statement identityStatement = con.createStatement();
-//            ResultSet identityResultSet = identityStatement.executeQuery(identityQuery);
-//            identityResultSet.next();
-//            long id = identityResultSet.getLong("IDENTITY");
-//            identityResultSet.close();
-//            identityStatement.close();
-
-//            user.setId(id);
             user.setId(HelperDB.getId());
             System.out.println("userID: " + user.getId());
             return true;

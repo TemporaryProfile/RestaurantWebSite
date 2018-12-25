@@ -47,14 +47,6 @@ public class SimpleDishDao implements DishDao {
             System.out.println("selectAll");
 
             while (resSet.next()) {
-//                final String id = resSet.getString(1);
-//                final String name = resSet.getString(2);
-//                final String calories = resSet.getString(3);
-//                final String type = resSet.getString(4);
-//                final boolean isVegeterian = resSet.getString(5).equalsIgnoreCase("YES");
-//                final BigDecimal price = new BigDecimal(resSet.getString(6));
-
-//                menu.add(new Dish(Integer.parseInt(id), name, Integer.parseInt(calories), Dish.Type.valueOf(type), isVegeterian, price));
                 Dish dish = HelperDB.mapDish(resSet);
                 System.out.println(dish);
                 menu.add(dish);
